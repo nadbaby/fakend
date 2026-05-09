@@ -12,19 +12,40 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
   "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:5174",
+  "http://127.0.0.1:5175",
   process.env.FRONTEND_URL,
   "https://tent-nine.vercel.app",
   "https://finebearing.vercel.app",
   "https://fine-bearing.vercel.app"
 ].filter(Boolean);
 
-app.use(cors({
-  origin: allowedOrigins,
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                     origin.includes("airoapp.ai") || 
+                     origin.includes("localhost") ||
+                     origin.includes("127.0.0.1");
+                     
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 
 
 // For Razorpay webhooks, we need the raw body for signature verification
@@ -35,7 +56,7 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({ extended: true }));
 const multer = require("multer");
-const { sendOtp, verifyOtp, sendSMSOrderAlert } = require("./twiloapi");
+const { sendOtp, verifyOtp, sendSMSOrderAlert, sendAdminNewOrderAlert } = require("./twiloapi");
 
 // Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, "uploads");
@@ -465,10 +486,6 @@ app.put("/api/products/:id", auth, adminOnly, (req, res) => {
 app.post("/api/payment/create-order", async (req, res) => {
   try {
     const { items, userId, shippingAddress } = req.body;
-
-    if (!razorpay) {
-      return res.status(500).json({ message: "Razorpay keys are missing on server" });
-    }
 
     if (!items || !items.length) {
       return res.status(400).json({ message: "Cart is empty" });
