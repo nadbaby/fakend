@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "sku": "HYD-0001",
+    "name": "01 DEAD PLUG",
+    "slug": "01-dead-plug",
+    "brand": "FINHY",
+    "category": "Hydraulic",
+    "subcategory": "Fin Hyd",
+    "price": null,
+    "stock": null,
+    "description": "",
+    "image": "",
+    "isActive": true,
+    "source": {
+      "itemName": "01 DEAD PLUG FINHY",
+      "category": "FIN HYD",
+      "subCategory": "FIN HYD",
+      "brand": "STD"
+    }
+  },
+  {
+    "id": 1,
+    "sku": "HYD-0001",
+    "name": "01 DEAD PLUG",
+    "slug": "01-dead-plug",
+    "brand": "FINHY",
+    "category": "Hydraulic",
+    "subcategory": "Fin Hyd",
+    "price": null,
+    "stock": null,
+    "description": "",
+    "image": "",
+    "isActive": true,
+    "source": {
+      "itemName": "01 DEAD PLUG FINHY",
+      "category": "FIN HYD",
+      "subCategory": "FIN HYD",
+      "brand": "STD"
+    }
+  }
+]

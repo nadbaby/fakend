@@ -1,0 +1,181 @@
+const twilio = require('twilio');
+
+// Load environment variables
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const apiKeySid = process.env.TWILIO_API_KEY_SID;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+
+console.log("Twilio Config Loaded:", { 
+    accountSid: !!accountSid, 
+    authToken: !!authToken, 
+    apiKeySid: !!apiKeySid, 
+    phone: !!twilioPhoneNumber 
+});
+
+// Initialize Twilio Client
+let client;
+if (apiKeySid && apiKeySid.startsWith('SK')) {
+    console.log("Using Twilio API Key authentication...");
+    client = twilio(apiKeySid, authToken, { accountSid: accountSid });
+} else {
+    console.log("Using Twilio Account SID/Auth Token authentication...");
+    client = twilio(accountSid, authToken);
+}
+
+// In-memory OTP storage (phone → { otp, expires, lastSent })
+const otpStore = new Map();
+
+/**
+ * Sends a 6-digit OTP via SMS
+ * @param {string} phone  E.164 format, e.g. +919888109761
+ * @returns {Promise<object>}
+ */
+const sendOtp = async (phone) => {
+    if (!phone) throw new Error('Phone number is required');
+
+    // Rate-limit: 60 seconds between requests per number
+    const existing = otpStore.get(phone);
+    const now = Date.now();
+    if (existing && (now - existing.lastSent < 60000)) {
+        const remaining = Math.ceil((60000 - (now - existing.lastSent)) / 1000);
+        throw new Error(`Please wait ${remaining} seconds before requesting a new OTP.`);
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = now + (5 * 60 * 1000); // 5 minutes
+
+    try {
+        const message = await client.messages.create({
+            body: `Your Fine Bearing OTP is: ${otp}\nValid for 5 minutes. Do not share this code.`,
+            from: twilioPhoneNumber,
+            to: phone
+        });
+
+        otpStore.set(phone, { otp, expires: expiry, lastSent: now });
+        console.log(`OTP sent via SMS to ${phone} | SID: ${message.sid}`);
+        return { success: true, messageId: message.sid };
+
+    } catch (error) {
+        console.error('Twilio SMS Error:', error.code, error.message);
+
+        // Give user-friendly error for trial account restriction
+        if (error.code === 21608) {
+            throw new Error(
+                'This phone number is not verified with our SMS provider. ' +
+                'During the testing phase, only pre-registered numbers can receive OTPs. ' +
+                'Please contact support to get your number verified.'
+            );
+        }
+        if (error.code === 21211) {
+            throw new Error('Invalid phone number format. Please include country code (e.g. +91...)');
+        }
+        if (error.code === 21614) {
+            throw new Error('This number is not capable of receiving SMS messages.');
+        }
+        throw new Error('Failed to send OTP. Please try again or contact support.');
+    }
+};
+
+/**
+ * Verifies the OTP for a given phone number
+ * @param {string} phone
+ * @param {string} otp
+ * @returns {boolean}
+ */
+const verifyOtp = (phone, otp) => {
+    if (!phone || !otp) return false;
+
+    const storedData = otpStore.get(phone);
+    if (!storedData) return false;
+
+    const now = Date.now();
+    if (now > storedData.expires) {
+        otpStore.delete(phone);
+        return false;
+    }
+
+    if (storedData.otp === otp.trim()) {
+        otpStore.delete(phone); // one-time use
+        return true;
+    }
+
+    return false;
+};
+
+/**
+ * Sends an order status SMS alert to a customer
+ * @param {string} phone   E.164 format
+ * @param {string} orderId
+ * @param {string} status
+ */
+const sendSMSOrderAlert = async (phone, orderId, status) => {
+    if (!phone || !orderId || !status) {
+        throw new Error('Missing parameters for SMS alert');
+    }
+
+    const s = status.toLowerCase();
+    const messageTemplates = {
+        confirmed:        `✅ Order Confirmed!\nOrder #${orderId} has been confirmed by Fine Bearing. We'll notify you when it's packed.`,
+        packed:           `📦 Order Packed!\nOrder #${orderId} is packed and ready for dispatch.`,
+        dispatched:       `🚚 Order Dispatched!\nOrder #${orderId} is on its way. Expect delivery updates soon.`,
+        out_for_delivery: `🛵 Out for Delivery!\nOrder #${orderId} is out for delivery. Please be available.`,
+        delivered:        `✅ Delivered!\nOrder #${orderId} has been delivered. Thank you for shopping with Fine Bearing!`,
+        cancelled:        `❌ Order Cancelled\nOrder #${orderId} has been cancelled. Contact us for support.`,
+    };
+
+    const body = messageTemplates[s] || 
+        `📋 Order Update\nOrder #${orderId} status: ${status}. - Fine Bearing`;
+
+    try {
+        const message = await client.messages.create({
+            body,
+            from: twilioPhoneNumber,
+            to: phone
+        });
+        console.log(`SMS order alert sent to ${phone} | SID: ${message.sid}`);
+        return { success: true, messageId: message.sid };
+    } catch (error) {
+        console.error('Twilio SMS Alert Error:', error.code, error.message);
+        // Don't throw — order should still process even if SMS fails
+        return { success: false, error: error.message };
+    }
+};
+
+/**
+ * Notifies admin/staff about a new order
+ * @param {object} order  Full order object
+ */
+const sendAdminNewOrderAlert = async (order) => {
+    // Get list of admin/staff numbers from .env (comma separated)
+    // Example: ADMIN_NOTIFICATION_PHONES=+919888109761,+918146119761
+    const numbersStr = process.env.ADMIN_NOTIFICATION_PHONES || process.env.ADMIN_PHONE || "";
+    const numbers = numbersStr.split(',').map(n => n.trim()).filter(n => n.length > 5);
+
+    if (numbers.length === 0) {
+        console.log("No ADMIN_NOTIFICATION_PHONES found in .env, skipping admin SMS.");
+        return;
+    }
+
+    const body = `🚨 NEW ORDER RECEIVED!\n\nOrder ID: #${order.orderId}\nCustomer: ${order.user?.name || 'Guest'}\nAmount: ₹${order.total.toFixed(2)}\nItems: ${order.items.length}\n\nPlease check the Order Panel for details.`;
+
+    for (const phone of numbers) {
+        try {
+            await client.messages.create({
+                body,
+                from: twilioPhoneNumber,
+                to: phone
+            });
+            console.log(`Admin SMS notification sent to ${phone}`);
+        } catch (error) {
+            console.error(`Failed to send Admin SMS to ${phone}:`, error.message);
+        }
+    }
+};
+
+module.exports = { 
+    sendOtp, 
+    verifyOtp, 
+    sendSMSOrderAlert,
+    sendAdminNewOrderAlert
+};

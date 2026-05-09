@@ -1,0 +1,20 @@
+{
+  "name": "b2b-ecommerce-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.1",
+    "firebase-admin": "^13.8.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "pdfkit": "^0.18.0",
+    "razorpay": "^2.9.6",
+    "twilio": "^6.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'Building...'"
+  }
+}

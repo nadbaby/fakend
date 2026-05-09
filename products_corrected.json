@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "sku": "BG-0001",
+    "name": "UCP-208 Pillow Block Bearing",
+    "slug": "ucp-208-bearing",
+    "brand": "FINHY",
+    "category": "Bearings",
+    "subcategory": "Fin BG",
+    "price": 2054,
+    "stock": 10000,
+    "description": "The UCP-208 is a high-performance pillow block bearing designed for heavy-duty industrial applications. It features a robust cast iron housing and a high-precision chrome steel ball bearing insert. The self-aligning feature allows for easy installation and compensates for shaft misalignment.",
+    "image": "/uploads/UCP.png",
+    "catalogue": "/uploads/catalogue/UC Series FINHY.pdf",
+    "images": [
+      "/uploads/UCP.png"
+    ],
+    "features": [
+      "High-grade cast iron housing for maximum durability",
+      "Double-sealed chrome steel bearing insert",
+      "Self-aligning design for easy maintenance",
+      "Pre-lubricated with high-temperature grease",
+      "Standard 40mm shaft diameter compatibility"
+    ],
+    "specifications": {
+      "Inside Diameter": "40 mm",
+      "Center Height": "49.2 mm",
+      "Bolt Hole Centers": "137 mm",
+      "Base Length": "184 mm",
+      "Housing Material": "Cast Iron G25",
+      "Insert Material": "Chrome Steel GCr15",
+      "Weight": "1.9 kg",
+      "Length": "20",
+      "Width": "15",
+      "Height": "10"
+    },
+    "isActive": true,
+    "source": {
+      "itemName": "UCP-208 FINHY",
+      "category": "FIN BG",
+      "subCategory": "FIN BG",
+      "brand": "STD"
+    }
+  },
+  {
+    "id": 2,
+    "sku": "BG-0002",
+    "name": "UCP-209 Industrial Bearing Unit",
+    "slug": "ucp-209-bearing",
+    "brand": "FINHY",
+    "category": "Bearings",
+    "subcategory": "Fin BG",
+    "price": 3241,
+    "stock": 25,
+    "description": "Industrial grade UCP-209 pillow block bearing unit. Perfect for conveyor systems and heavy machinery. Built to last with premium materials and precise engineering.",
+    "image": "/uploads/1777027312844-969381383.jpg",
+    "catalogue": "/uploads/catalogue/UC Series FINHY.pdf",
+    "images": [
+      "/uploads/1777027312844-969381383.jpg",
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600",
+      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600",
+      "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600",
+      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=600",
+      "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600"
+    ],
+    "features": [
+      "Heavy-duty construction",
+      "Smooth rotation with minimal friction",
+      "Excellent vibration damping properties",
+      "Resistant to dust and contaminants",
+      "Reliable performance under high loads"
+    ],
+    "specifications": {
+      "Inside Diameter": "45 mm",
+      "Center Height": "54 mm",
+      "Bolt Hole Centers": "146 mm",
+      "Base Length": "190 mm",
+      "Housing Material": "Cast Iron",
+      "Insert Material": "Bearing Steel",
+      "Weight": "2.2 kg",
+      "Length": "25",
+      "Width": "20",
+      "Height": "12"
+    },
+    "isActive": true,
+    "source": {
+      "itemName": "UCP-209 FINHY",
+      "category": "FIN BG",
+      "subCategory": "FIN BG",
+      "brand": "STD"
+    }
+  },
+  {
+    "id": 3,
+    "sku": "BG-0003",
+    "name": "UCP-210 Premium Bearing",
+    "slug": "ucp-210-bearing",
+    "brand": "FINHY",
+    "category": "Bearings",
+    "subcategory": "Fin BG",
+    "price": 1100,
+    "stock": 10,
+    "description": "Premium UCP-210 bearing unit featuring advanced sealing technology and high-load capacity. Ideal for precision machinery and industrial equipment.",
+    "image": "/uploads/1777027351435-749341720.jpg",
+    "catalogue": "/uploads/catalogue/UC Series FINHY.pdf",
+    "images": [
+      "/uploads/1777027351435-749341720.jpg",
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600",
+      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600",
+      "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600",
+      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=600",
+      "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600"
+    ],
+    "features": [
+      "Premium sealing for harsh environments",
+      "High-precision balls and raceways",
+      "Low noise and vibration",
+      "Extended service intervals",
+      "Standard 50mm shaft compatibility"
+    ],
+    "specifications": {
+      "Inside Diameter": "50 mm",
+      "Center Height": "57.2 mm",
+      "Bolt Hole Centers": "159 mm",
+      "Base Length": "206 mm",
+      "Housing Material": "Ductile Iron",
+      "Insert Material": "Chrome Steel",
+      "Weight": "2.6 kg",
+      "Length": "30",
+      "Width": "25",
+      "Height": "15"
+    },
+    "isActive": true,
+    "source": {
+      "itemName": "UCP-210 FINHY",
+      "category": "FIN BG",
+      "subCategory": "FIN BG",
+      "brand": "STD"
+    }
+  },
+  {
+    "id": 4,
+    "sku": "test",
+    "name": "Test Industrial Component",
+    "slug": "test",
+    "brand": "test",
+    "category": "test",
+    "subcategory": "test",
+    "price": 999,
+    "stock": 100,
+    "description": "Sample test product description for UI validation.",
+    "image": "/uploads/1777028179014-457998937.png",
+    "isActive": true,
+    "source": {
+      "itemName": "test",
+      "category": "test",
+      "subCategory": "test",
+      "brand": "test"
+    }
+  },
+  {
+    "id": 53633,
+    "sku": "BG-202",
+    "name": "UCP-202 L3",
+    "slug": "ucp-202-l3",
+    "brand": "FINHY",
+    "category": "Bearings",
+    "subcategory": "UCP",
+    "price": 520,
+    "stock": null,
+    "description": "High-quality UCP-202 L3 pillow block bearing unit. Part of the UC Series industrial range.",
+    "image": "/uploads/1777289710499-960028662.png",
+    "catalogue": "/uploads/catalogue/UC Series FINHY.pdf",
+    "images": [
+      "/uploads/1777289710499-960028662.png"
+    ],
+    "features": [
+      "Precision engineered",
+      "Durable housing",
+      "Part of UC Series"
+    ],
+    "specifications": {
+      "Series": "UC",
+      "Type": "Pillow Block"
+    },
+    "isActive": true,
+    "source": {
+      "itemName": "UCP-202 L3",
+      "category": "FIN BG",
+      "subCategory": "FIN UCP BG",
+      "brand": "FINHY"
+    }
+  }
+]

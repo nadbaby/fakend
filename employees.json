@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1777275076263",
+    "username": "Rahul_staff",
+    "password": "Anika1212",
+    "name": "Rahul",
+    "email": "support@gmail.com",
+    "role": "Staff",
+    "permissions": [
+      "view_orders",
+      "edit_status"
+    ],
+    "firebaseUid": null,
+    "backendRole": "employee",
+    "phone": "+919463964644"
+  }
+]
